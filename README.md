@@ -29,6 +29,8 @@ npm install
 
 3. Create a Connection to the Mysql DataBase:
 
+
+
 var mysqlConnection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -44,6 +46,8 @@ mysqlConnection.connect((err) => {
     console.log(err);
   }
 });
+
+
 
 ->change the user, password and database accordingly to the requirement of the created database 
 
