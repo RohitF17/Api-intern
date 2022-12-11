@@ -1,0 +1,41 @@
+-- Online SQL Editor to Run SQL Online.
+-- Use the editor to create new tables, insert data and all other SQL operations.
+/*Create table Customerinfo(
+customer_id int not null,
+  transcation_amount float not null,
+  mobile_no varchar(15) not null,
+  date_time datetime,
+  pincode varcahr(15) not null
+);
+ */
+/*Insert into Customerinfo(customer_id,transcation_amount , mobile_no ,date_time, pincode) values (15,146677,'7256495',2008-11-20,'50002' );  */
+/* Select * From Customerinfo Where transcation_amount>7000 AND transcation_amount<15000
+ */
+ select * from customerinfo Order BY pincode Desc limit 4;
+ select * from d3 join citycodes on d3.pincode = citycodes.pincodes Where citycodes.state='punjab';
+
+
+ const response = {};
+      result.rows.forEach(row => {
+        if (!response[row.pincode]) {
+          response[row.pincode] = [];
+        }
+        response[row.pincode].push({
+          customer_id: row.customer_id,
+          transaction_amount: row.transaction_amount,
+        });
+      });
+
+      // send the response
+      res.json(response);
+    });
+
+    SELECT
+        citycodes.pincode,
+        d3.customer_id,
+        d3.transaction_amount
+      FROM citycodes
+      INNER JOIN d3 ON citycodes.pincode = d3.pincode
+      WHERE citycodes.state = $1
+      GROUP BY citycodes.pincode, d3.customer_id
+      ORDER BY citycodes.pincode, d3.transaction_amount DESC;
