@@ -39,3 +39,81 @@ customer_id int not null,
       WHERE citycodes.state = $1
       GROUP BY citycodes.pincode, d3.customer_id
       ORDER BY citycodes.pincode, d3.transaction_amount DESC;
+
+      SELECT *
+FROM customers
+WHERE SUM(transaction_amount) BETWEEN 200000 AND 50000
+AND transaction_datetime BETWEEN CURDATE() - INTERVAL DAYOFMONTH(CURDATE()) DAY AND CURDATE();
+
+SELECT customer_id,sum(transaction_amount)
+FROM Customerinfo
+group by customer_id
+having sum(transaction_amount) between 5000 and 6000;
+AND transaction_datetime BETWEEN CURDATE() - INTERVAL DAYOFMONTH(CURDATE()) DAY AND CURDATE();
+
+
+SELECT pincode, customer_id, transaction_amount
+FROM transactions
+WHERE state = 'Punjab'
+GROUP BY pincode, customer_id
+ORDER BY transaction_amount DESC
+LIMIT 5
+
+SELECT pincode, customer_id, SUM(transaction_amount) as total_transaction_amount
+FROM transactions
+WHERE state = 'Punjab'
+GROUP BY pincode, customer_id
+ORDER BY pincode, total_transaction_amount DESC
+LIMIT 5;
+
+const express = require('express');
+const mysql2 = require('mysql2');
+
+const app = express();
+const connection = mysql2.createConnection({
+  host: 'localhost',
+  user: 'your_username',
+  password: 'your_password',
+  database: 'your_database'
+});
+
+app.get('/api/v1/users', (req, res) => {
+  // Validate the query parameters
+  if (!req.query.mobile_number || !req.query.pincode) {
+    return res.status(400).json({
+      error: 'Mobile number and pincode are required query parameters'
+    });
+  }
+
+  if (typeof req.query.mobile_number !== 'string') { 
+    return res.status(400).json({
+      error: 'Mobile number must be a string'
+    });
+  }
+
+  if (req.query.mobile_number.length !== 10) {
+    return res.status(400).json({
+      error: 'Mobile number must be 10 characters long'
+    });
+  }
+
+  if (!/^\d+$/.test(req.query.mobile_number)) {
+    return res.status(400).json({
+      error: 'Mobile number must contain only numbers'
+    });
+  }
+
+  if (typeof req.query.pincode !== 'string') {
+    return res.status(400).json({
+      error: 'Pincode must be a string'
+    });
+  }
+
+  if (req.query.pincode.length !== 8) {
+    return res.status(400).json({
+      error: 'Pincode must be 8 characters long'
+    });
+  }
+
+  if (!/^\d+$/.test(req.query.pincode)) {
+    return res.status(400

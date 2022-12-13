@@ -14,16 +14,14 @@ Router.get("/", (req, res) => {
     //Running Sql Queries
 
     mysqlConnection.query(
-      `SELECT
-statepincodes.pincode,
-customerinfo.customer_id AS customer,
-SUM(customerinfo.transaction_amount) AS total_transactions
-FROM customerinfo
-INNER JOIN statepincodes ON customerinfo.pincode = statepincodes.pincode
-WHERE statepincodes.state = '${state}'
-GROUP BY statepincodes.pincode, customerinfo.customer_id
-ORDER BY statepincodes.pincode, total_transactions DESC
-
+      `
+      SELECT  pincode, customer_id, SUM(transaction_amount) as total_transaction_amount
+      FROM customerinfo
+      WHERE state = '${state}'
+      GROUP BY pincode, customer_id
+       ORDER BY pincode,total_transaction_amount
+      LIMIT 5;
+      
 `,
       (err, rows, fields) => {
         if (!err) {

@@ -3,23 +3,17 @@ const res = require("express/lib/response");
 const Router = express.Router();
 const mysqlConnection = require("../database");
 const moment = require("moment");
-
+//Function to handle the request and responses
 Router.post("/", (req, res) => {
-  const { customer_id, transaction_amount, mobile_no, pincode } = req.body;
+  const { customer_id, transaction_amount, mobile_no, pincode,state } = req.body;
   console.log(req.body);
+  console.log(typeof mobile_no);
+  console.log(typeof pincode);
   //console.log(typeof(customer_id1));
   //validations
-  {/*
- if (typeof customer_id1 === 'Number') {
-   var customer_id =customer_id1;
- } else {
-   res.send('Incorrect Type for CustomerId');
- }
- if (typeof transaction_amount1 === 'number') {
-   var transaction_amount = transaction_amount1;
- } else {
-    res.send('Incorrect type of Transcation_amount');
- }
+  
+ 
+ {/*
  if (typeof mobile_no1 === 'string' && mobile_no1.length === 10 && !isNaN(mobile_no1)) {
    var mobile_no=mobile_no1;
  } else {
@@ -32,8 +26,8 @@ Router.post("/", (req, res) => {
    res.send("Incorrect Pincode Please Check Again");
  } 
 */}
-  var transcation_date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
-
+  var transaction_date = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"); // To create a timestamp for the given record
+//inserting the given data from the request body to the database
   mysqlConnection.query(
     "Insert Into customerinfo SET ?",
     {
@@ -41,14 +35,16 @@ Router.post("/", (req, res) => {
       transaction_amount,
       mobile_no,
       pincode,
-      transcation_date,
+      transaction_date,
+      state
     },
     (err, result) => {
       if (err) {
         return res.status(500).json({ err });
       }
+      //taking the last index and returing back the entered data back to the user in JSON format 
       mysqlConnection.query(
-        "SELECT * FROM customerinfo WHERE customer_id=?",
+        "SELECT * FROM customerinfo WHERE transaction_id=?",
         [result.insertId],
         (error, results) => {
           if (error) {

@@ -1,12 +1,12 @@
 const express = require("express");
 
-const bodyParser = require("body-parser");
+const bodyParser = require("body-parser"); 
 const CustomerRoute = require("./Routes/Api");
 const topCustomers = require("./Routes/top_Customers");
 const createCustomer = require("./Routes/createCustomer");
 const mysql = require("mysql2");
 const mysqlConnection = require("./database");
-const app = express();
+const app = express(); //setting up the express app 
 
 app.use(bodyParser.json());
 app.use("/createCustomer", createCustomer); // API 1 To Create An Entry In The DataBase
@@ -17,4 +17,4 @@ app.get("/", (req, res) => {
   res.send("Main API Page");
 });
 
-app.listen(3000);
+app.listen(3000); //listeing to this port 

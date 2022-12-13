@@ -11,9 +11,15 @@ Router.get("/", (req, res) => {
   //Validations
   if (Number.isInteger(num1) & Number.isInteger(num2) & (num1 > num2)) {
     //Number.isInteger Functions Returns True if its a number and False Otherwise
-    //Running Sql Queries
+    //Running Sql Queries we got two if else statments to handle the val1 and val2 entered we could use between function but this is more efficent 
+   
     mysqlConnection.query(
-      `Select * From customerinfo Where transaction_amount<${num1} AND transaction_amount>${num2} `,
+      ` SELECT customer_id,sum(transaction_amount),mobile_no,pincode,transaction_date
+FROM customerinfo
+group by customer_id
+having sum(transaction_amount)<${num1} AND sum(transaction_amount)>${num2}
+
+      `,
       (err, rows, fields) => {
         if (!err) {
           res.send(rows);
@@ -23,8 +29,12 @@ Router.get("/", (req, res) => {
       }
     );
   } else if (Number.isInteger(num1) & Number.isInteger(num2) & (num2 > num1)) {
+
     mysqlConnection.query(
-      `Select * From customerinfo Where transaction_amount>${num1} AND transaction_amount<${num2} `,
+      `SELECT customer_id,sum(transaction_amount),mobile_no,pincode
+      FROM customerinfo
+      group by customer_id
+      having sum(transaction_amount)>${num1} AND sum(transaction_amount)<${num2} `,
       (err, rows, fields) => {
         if (!err) {
           res.send(rows);
