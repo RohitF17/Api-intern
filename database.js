@@ -2,9 +2,9 @@ const mysql = require("mysql2");
 //creating a connection with the database
 var mysqlConnection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "rootpassword",
-  database: "testdata",
+  user: "root", //The user which is logged into your workbench
+  password: "rootpassword", //connect your password based on mysql
+  database: "testdata", //Create a schema before hand in mysql and put the data in here
   multipleStatements: true,
 });
 mysqlConnection.connect((err) => {
@@ -30,8 +30,6 @@ mysqlConnection.connect((err) => {
       console.log(err.message);
     }
   });
-
- 
 });
 
 module.exports = mysqlConnection;
